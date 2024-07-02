@@ -1,2 +1,1 @@
-- Clang-format
-- Nixy Player Runtime Extension
+Dynamic library abstraction - https://github.com/martin-olivier/dylib/blob/main/include/dylib.hpp
