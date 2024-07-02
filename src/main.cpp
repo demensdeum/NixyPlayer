@@ -79,8 +79,13 @@ int main(int argc, char **argv) {
 
         CTinyJS *tinyJS = new CTinyJS();
 
+        NixyPlayerContext context {
+            tinyJS = tinyJS,
+            verbose = verbose
+        };
+
         tinyJS->addNative("function print(text)", &tinyJSBindings_Print, 0);
-        tinyJS->addNative("function include(text)", &tinyJSBindingsToFlameSteelEngineGameToolkit_Include, tinyJS);
+        tinyJS->addNative("function include(text)", &tinyJSBindingsToFlameSteelEngineGameToolkit_Include, &context);
         registerFunctions(tinyJS);
         registerMathFunctions(tinyJS);
 

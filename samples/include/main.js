@@ -1,0 +1,2 @@
+include("azrael.js");
+includeCheck();
