@@ -42,10 +42,7 @@ int main(int argc, char **argv)
     }
     if (argc < 2)
     {
-        if (verbose)
-        {
-            cout << "No start JavaScript file provided as first argument. Error 1" << endl;
-        }
+        cout << "No start JavaScript file provided as first argument. Error 1" << endl;
         exit(1);
     }
 
@@ -60,8 +57,7 @@ int main(int argc, char **argv)
 
     NixyPlayerContext context{
         tinyJS = tinyJS,
-        verbose = verbose
-    };
+        verbose = verbose};
 
     for (auto extension : extensions)
     {
@@ -69,30 +65,23 @@ int main(int argc, char **argv)
 
         if (!extensionHandle)
         {
-            if (verbose)
-            {
-                const char *errorString = dlerror();
-                cout << errorString << endl;
-                cout << "Error 4" << endl;
-            }
+            const char *errorString = dlerror();
+            cout << errorString << endl;
+            cout << "Error 4" << endl;
             exit(4);
         }
 
-        typedef map<string, void *> (*JSExtensionFunctionPointer)();	
-        
-        
+        typedef map<string, void *> (*JSExtensionFunctionPointer)();
+
         auto functionPointer = JSExtensionFunctionPointer();
         functionPointer = (JSExtensionFunctionPointer)dlsym(extensionHandle, "registerNixyPlayerExtensions");
         auto dlsymError = dlerror();
 
         if (dlsymError)
         {
-            if (verbose)
-            {
-                const char *errorString = dlerror();
-                cout << errorString << endl;
-                cout << "Error 5" << endl;
-            }
+            const char *errorString = dlerror();
+            cout << errorString << endl;
+            cout << "Error 5" << endl;
             exit(5);
         }
 
@@ -107,8 +96,7 @@ int main(int argc, char **argv)
             tinyJS->addNative(
                 jsExtension.first,
                 reinterpret_cast<JSCallback>(jsExtension.second),
-                &context
-            );
+                &context);
         }
     }
 
@@ -118,13 +106,11 @@ int main(int argc, char **argv)
     }
     catch (CScriptException *error)
     {
-        if (verbose)
-        {
-            cout << "---[SCRIPT ERROR START]---" << endl;
-            cout << "Tiny-JS error: " << error->text << endl;
-            cout << "---[SCRIPT ERROR END]---" << endl;
-            cout << "Error 2" << endl;
-        }
+
+        cout << "---[SCRIPT ERROR START]---" << endl;
+        cout << "Tiny-JS error: " << error->text << endl;
+        cout << "---[SCRIPT ERROR END]---" << endl;
+        cout << "Error 2" << endl;
         exit(2);
     }
     return 0;
