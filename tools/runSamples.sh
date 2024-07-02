@@ -1,0 +1,1 @@
+./build/NixyPlayer samples/helloWorld/helloWorld.js
