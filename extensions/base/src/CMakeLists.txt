@@ -14,7 +14,7 @@ function(enable_cxx_compiler_flag_if_supported flag)
     endif()
 endfunction()
 
-set(PROJECT_NAME NixyPlayer)
+set(PROJECT_NAME NixyPlayerBaseExtension)
 
 project(${PROJECT_NAME})
 
@@ -35,15 +35,11 @@ enable_cxx_compiler_flag_if_supported("-Wunreachable-code")
 enable_cxx_compiler_flag_if_supported("-Wfloat-equal")
 enable_cxx_compiler_flag_if_supported("-Wformat=2")
 
-include_directories(. ../shared/thirdparty ../shared/include)
+include_directories(. ../../../shared/thirdparty ../../../shared/include)
 
 file(GLOB_RECURSE SOURCE_FILES
     "*.cpp",
-    "../shared/thirdparty/*.cpp"
+    "../thirdparty/*.cpp"
 )
 
-set(CMAKE_ENABLE_EXPORTS ON)
-
-add_executable(${PROJECT_NAME} ${SOURCE_FILES})
-
-target_link_libraries(${PROJECT_NAME})
+add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})

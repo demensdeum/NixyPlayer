@@ -2,7 +2,7 @@
     "configurations": [
         {
             "name": "General",
-            "includePath": ["./shared/thirdparty", "./shared/include"],
+            "includePath": ["../../shared/thirdparty", "../../shared/include"],
             "intelliSenseMode": "linux-gcc-x64",
             "compilerPath": "/usr/bin/clang",
             "cStandard": "c23",

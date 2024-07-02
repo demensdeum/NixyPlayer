@@ -1,5 +1,5 @@
-# NixyPlayer
-NixyPlayer - small crossplatform JavaScript runtime
+# Nixy Player
+Nixy Player - small crossplatform extendable JavaScript runtime
   
 Contains VSCode files.  
   
