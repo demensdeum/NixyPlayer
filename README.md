@@ -1,12 +1,12 @@
 # Nixy Player  
 <p align="center" width="100%">
-    <img width="80%" src="https://i.sstatic.net/RJj4x.png">
+    <img width="80%" src="https://raw.githubusercontent.com/demensdeum/NixyPlayer/main/Nixy.jpg">
 </p>
 
 Nixy Player - small crossplatform extendable JavaScript runtime
   
 <p align="center" width="100%">
-    <img width="80%" src="https://i.sstatic.net/RJj4x.png">
+    <img width="100%" src="https://raw.githubusercontent.com/demensdeum/NixyPlayer/main/Screenshot.png">
 </p>
 
 Contains VSCode files.  
