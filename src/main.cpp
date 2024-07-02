@@ -4,17 +4,27 @@
 
 #include <iostream>
 #include <fstream>
-#include <print>
+#include "constants.h"
 
 using std::println;
 using std::string;
+using std::cout;
+using std::endl;
 
-string fileContent(const char *path) {
+struct NixyPlayerContext {
+    CTinyJS *tinyJS;
+    bool verbose;
+};
+
+
+string fileContent(const char *path, bool verbose) {
         std::ifstream file(path);
 
         if (!file.is_open()) {
-            println("Failed to open the file: {0}", path);
-            exit(1);
+            if (verbose) {
+                cout << "Failed to open the file: " << path << endl;
+            }
+            exit(3);
         }
 
         string startFileContent;
@@ -30,30 +40,44 @@ string fileContent(const char *path) {
         return startFileContent;
 }
 
-void tinyJSBindingsToFlameSteelEngineGameToolkit_Include(CScriptVar *v, void *pointerToTinyJS) {
-    auto path = v->getParameter("text")->getString();
-    auto includeScriptString = fileContent(path.c_str());
-    CTinyJS *tinyJS = static_cast<CTinyJS *>(pointerToTinyJS);
+void tinyJSBindingsToFlameSteelEngineGameToolkit_Include(CScriptVar *v, void *icontext) {
+    NixyPlayerContext *context = static_cast<NixyPlayerContext *>(icontext);
+    string path = v->getParameter("text")->getString();
+    string includeScriptString = fileContent(path.c_str(), context->verbose);
+    CTinyJS *tinyJS = static_cast<CTinyJS *>(context->tinyJS);
     tinyJS->execute(includeScriptString.c_str());
 };
 
 void tinyJSBindings_Print(CScriptVar *v, void *) {
-    println("{0}", v->getParameter("text")->getString());
+    cout << v->getParameter("text")->getString() << endl;
 }
 
 int main(int argc, char **argv) {
-    println("Welcome to NixyPlayer!");
+    bool verbose = false;
+
     for (int i = 0; i < argc; ++i) {
-        println("argv[{0}] = {1}", i, string(argv[i]));
-    }    
+        if (string(argv[i]) == "--verbose" || string(argv[i]) == "-v") {
+            verbose = true;
+        }
+    }
+
+    if (verbose) {
+        cout << "Welcome to NixyPlayer (" << NixyPlayerVersion << ")" << endl;
+        cout << "Verbose mode enabled" << endl;
+        for (int i = 0; i < argc; ++i) {
+            cout << "argv " << i << " - " << argv[i] << endl;
+        }
+    }
     if (argc < 2) {
-        println("No start JavaScript file provided as first argument. Error 1");
+        if (verbose) {
+            cout << "No start JavaScript file provided as first argument. Error 1" << endl;
+        }
         exit(1);
     }
     else {
-        string startFileContent = fileContent(argv[1]);
+        string startFileContent = fileContent(argv[1], verbose);
 
-        auto tinyJS = new CTinyJS();
+        CTinyJS *tinyJS = new CTinyJS();
 
         tinyJS->addNative("function print(text)", &tinyJSBindings_Print, 0);
         tinyJS->addNative("function include(text)", &tinyJSBindingsToFlameSteelEngineGameToolkit_Include, tinyJS);
@@ -64,13 +88,14 @@ int main(int argc, char **argv) {
             tinyJS->execute(startFileContent);
         }
         catch (CScriptException *error) {
-            println("---[SCRIPT ERROR START]---");
-            println("Tiny-JS error: {0}", error->text);
-            println("---[SCRIPT ERROR END]---");
-            println("Error 2");
-            exit(1);
+            if (verbose) {
+                cout << "---[SCRIPT ERROR START]---" << endl;
+                cout << "Tiny-JS error: " << error->text << endl;
+                cout << "---[SCRIPT ERROR END]---" << endl;
+                cout << "Error 2" << endl;
+            }
+            exit(2);
         }
-
     }
     return 0;
 }
