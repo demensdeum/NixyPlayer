@@ -9,6 +9,8 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <ranges>
+#include <sstream>
 
 #include "constants.h"
 
@@ -48,14 +50,14 @@ int main(int argc, char **argv) {
     registerFunctions(tinyJS);
     registerMathFunctions(tinyJS);
 
-    vector<const char *> extensions = {
-        "/home/demensdeum_stream/Sources/NixyPlayer/build/"
-        "libNixyPlayerBaseExtension.so"};
+    auto extensions = fileContent("extensions.nixyp", verbose);
 
     NixyPlayerContext context{tinyJS = tinyJS, verbose = verbose};
 
-    for (auto extension : extensions) {
-        auto extensionHandle = dlopen(extension, RTLD_LAZY);
+    std::stringstream ss(extensions);  
+    string extension;
+    while (ss >> extension) {
+        auto extensionHandle = dlopen(extension.c_str(), RTLD_LAZY);
 
         if (!extensionHandle) {
             const char *errorString = dlerror();

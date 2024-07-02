@@ -15,7 +15,7 @@ fi
 
 cd ../..
 cp extensions/base/build/libNixyPlayerBaseExtension.so build/libNixyPlayerBaseExtension.so
+cp resources/extensions.nixyp build
 
-if [ $? -eq 0 ]; then
-    ./build/NixyPlayer ./samples/helloWorld/main.js
-fi
+cd build
+./NixyPlayer ../samples/helloWorld/main.js
