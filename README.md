@@ -1,6 +1,8 @@
 # Nixy Player
 Nixy Player - small crossplatform extendable JavaScript runtime
   
+![Screenshot](Screenshot.png) 
+
 Contains VSCode files.  
   
 Tools:  
