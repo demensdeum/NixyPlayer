@@ -1,6 +1,6 @@
 # Nixy Player  
 <p align="center" width="100%">
-    <img width="80%" src="https://raw.githubusercontent.com/demensdeum/NixyPlayer/main/Nixy.jpeg">
+    <img width="35%" src="https://raw.githubusercontent.com/demensdeum/NixyPlayer/main/Nixy.jpeg">
 </p>
 
 Nixy Player - small crossplatform extendable JavaScript runtime
