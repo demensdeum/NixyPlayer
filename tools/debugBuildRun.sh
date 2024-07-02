@@ -2,5 +2,5 @@
 clear
 ./tools/private/build.sh --debug-build
 if [ $? -eq 0 ]; then
-    ./build/NixyPlayer
+    ./build/NixyPlayer ./samples/helloWorld/main.js --verbose
 fi

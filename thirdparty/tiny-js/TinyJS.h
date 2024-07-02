@@ -156,7 +156,7 @@ public:
     std::string getSubString(size_t pos); ///< Return a sub-string from the given position up until right now
     CScriptLex *getSubLex(size_t lastPosition); ///< Return a sub-lexer from the given position up until right now
 
-    std::string getPosition(size_t pos=-1); ///< Return a string representing the position in lines and columns of the character pos given
+    std::string getPosition(size_t pos, bool useTokenLastEnd = true); ///< Return a string representing the position in lines and columns of the character pos given
 
 protected:
     /* When we go into a loop, we use getSubLex to get a lexer for just the sub-part of the

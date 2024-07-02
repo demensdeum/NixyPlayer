@@ -723,8 +723,8 @@ CScriptLex *CScriptLex::getSubLex(size_t lastPosition) {
         return new CScriptLex(this, lastPosition, dataEnd );
 }
 
-string CScriptLex::getPosition(size_t pos) {
-    //if (pos<0) pos=tokenLastEnd;
+string CScriptLex::getPosition(size_t pos, bool useTokenLastEnd) {
+    if (useTokenLastEnd) pos=tokenLastEnd;
     size_t line = 1, col = 1;
     for (size_t i=0; i<pos; i++) {
         char ch;
@@ -1520,7 +1520,7 @@ void CTinyJS::execute(const string &code) {
         for (int i=(int)call_stack.size()-1; i>=0; i--)
             msg << "\n" << i << ": " << call_stack.at(i);
 #endif
-        msg << " at " << l->getPosition();
+        msg << " at " << l->getPosition(0, true);
         delete l;
         l = oldLex;
 
@@ -1558,7 +1558,7 @@ CScriptVarLink CTinyJS::evaluateComplex(const string &code) {
         for (int i=(int)call_stack.size()-1; i>=0; i--)
             msg << "\n" << i << ": " << call_stack.at(i);
 #endif
-        msg << " at " << l->getPosition();
+        msg << " at " << l->getPosition(0, true);
         delete l;
         l = oldLex;
 
@@ -1679,7 +1679,7 @@ CScriptVarLink *CTinyJS::functionCall(bool &execute, CScriptVarLink *function, C
         CScriptVarLink *returnVarLink = functionRoot->addChild(TINYJS_RETURN_VAR);
         scopes.push_back(functionRoot);
 #ifdef TINYJS_CALL_STACK
-        call_stack.push_back(function->name + " from " + l->getPosition());
+        call_stack.push_back(function->name + " from " + l->getPosition(0, true));
 #endif
 
         if (function->var->isNative()) {
@@ -2223,7 +2223,7 @@ void CTinyJS::statement(bool &execute) {
 
         if (loopCount<=0) {
             root->trace();
-            TRACE("WHILE Loop exceeded %d iterations at %s\n", TINYJS_LOOP_MAX_ITERATIONS, l->getPosition().c_str());
+            TRACE("WHILE Loop exceeded %d iterations at %s\n", TINYJS_LOOP_MAX_ITERATIONS, l->getPosition(0, true).c_str());
             throw new CScriptException("LOOP_ERROR");
         }
     } else if (l->tk==LEX_R_FOR) {
@@ -2275,7 +2275,7 @@ void CTinyJS::statement(bool &execute) {
         delete forBody;
         if (loopCount<=0) {
             root->trace();
-            TRACE("FOR Loop exceeded %d iterations at %s\n", TINYJS_LOOP_MAX_ITERATIONS, l->getPosition().c_str());
+            TRACE("FOR Loop exceeded %d iterations at %s\n", TINYJS_LOOP_MAX_ITERATIONS, l->getPosition(0, true).c_str());
             throw new CScriptException("LOOP_ERROR");
         }
     } else if (l->tk==LEX_R_RETURN) {
