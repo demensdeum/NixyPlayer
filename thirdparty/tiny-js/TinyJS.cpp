@@ -26,6 +26,8 @@
  * SOFTWARE.
  */
 
+// Version 0.2 : Lot of safety checks added, casts, verbose (DemensDeum)
+
 /* Version 0.1  :  (gw) First published on Google Code
    Version 0.11 :  Making sure the 'root' variable never changes
                    'symbol_base' added for the current base of the sybmbol table

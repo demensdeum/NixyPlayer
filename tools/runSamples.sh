@@ -1,1 +1,2 @@
-./build/NixyPlayer ./samples/helloWorld/helloWorld.js --verbose
+./build/NixyPlayer ./samples/helloWorld/main.js --verbose
+./build/NixyPlayer ./samples/math/main.js --verbose
