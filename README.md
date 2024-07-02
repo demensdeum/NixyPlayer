@@ -1,7 +1,13 @@
-# Nixy Player
+# Nixy Player  
+<p align="center" width="100%">
+    <img width="80%" src="https://i.sstatic.net/RJj4x.png">
+</p>
+
 Nixy Player - small crossplatform extendable JavaScript runtime
   
-![Screenshot](Screenshot.png) 
+<p align="center" width="100%">
+    <img width="80%" src="https://i.sstatic.net/RJj4x.png">
+</p>
 
 Contains VSCode files.  
   
