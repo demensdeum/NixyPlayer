@@ -1,16 +1,16 @@
+#include <NixyPlayerContext.h>
+#include <dlfcn.h>
 #include <tiny-js/TinyJS.h>
 #include <tiny-js/TinyJS_Functions.h>
 #include <tiny-js/TinyJS_MathFunctions.h>
-
-#include <NixyPlayerContext.h>
-#include <iostream>
-#include <fstream>
-#include "constants.h"
 #include <utils.h>
-#include <vector>
-#include <map>
 
-#include <dlfcn.h>
+#include <fstream>
+#include <iostream>
+#include <map>
+#include <vector>
+
+#include "constants.h"
 
 using std::cout;
 using std::endl;
@@ -19,30 +19,25 @@ using std::println;
 using std::string;
 using std::vector;
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
     bool verbose = false;
 
-    for (int i = 0; i < argc; ++i)
-    {
-        if (string(argv[i]) == "--verbose" || string(argv[i]) == "-v")
-        {
+    for (int i = 0; i < argc; ++i) {
+        if (string(argv[i]) == "--verbose" || string(argv[i]) == "-v") {
             verbose = true;
         }
     }
 
-    if (verbose)
-    {
+    if (verbose) {
         cout << "Welcome to Nixy Player (" << NixyPlayerVersion << ")" << endl;
         cout << "Verbose mode enabled" << endl;
-        for (int i = 0; i < argc; ++i)
-        {
+        for (int i = 0; i < argc; ++i) {
             cout << "argv " << i << " - " << argv[i] << endl;
         }
     }
-    if (argc < 2)
-    {
-        cout << "No start JavaScript file provided as first argument. Error 1" << endl;
+    if (argc < 2) {
+        cout << "No start JavaScript file provided as first argument. Error 1"
+             << endl;
         exit(1);
     }
 
@@ -53,18 +48,16 @@ int main(int argc, char **argv)
     registerFunctions(tinyJS);
     registerMathFunctions(tinyJS);
 
-    vector<const char *> extensions = {"/home/demensdeum_stream/Sources/NixyPlayer/build/libNixyPlayerBaseExtension.so"};
+    vector<const char *> extensions = {
+        "/home/demensdeum_stream/Sources/NixyPlayer/build/"
+        "libNixyPlayerBaseExtension.so"};
 
-    NixyPlayerContext context{
-        tinyJS = tinyJS,
-        verbose = verbose};
+    NixyPlayerContext context{tinyJS = tinyJS, verbose = verbose};
 
-    for (auto extension : extensions)
-    {
+    for (auto extension : extensions) {
         auto extensionHandle = dlopen(extension, RTLD_LAZY);
 
-        if (!extensionHandle)
-        {
+        if (!extensionHandle) {
             const char *errorString = dlerror();
             cout << errorString << endl;
             cout << "Error 4" << endl;
@@ -74,11 +67,11 @@ int main(int argc, char **argv)
         typedef map<string, void *> (*JSExtensionFunctionPointer)();
 
         auto functionPointer = JSExtensionFunctionPointer();
-        functionPointer = (JSExtensionFunctionPointer)dlsym(extensionHandle, "registerNixyPlayerExtensions");
+        functionPointer = (JSExtensionFunctionPointer)dlsym(
+            extensionHandle, "registerNixyPlayerExtensions");
         auto dlsymError = dlerror();
 
-        if (dlsymError)
-        {
+        if (dlsymError) {
             const char *errorString = dlerror();
             cout << errorString << endl;
             cout << "Error 5" << endl;
@@ -87,26 +80,19 @@ int main(int argc, char **argv)
 
         auto jsExtensionsMap = functionPointer();
 
-        for (auto jsExtension : jsExtensionsMap)
-        {
-            if (verbose)
-            {
+        for (auto jsExtension : jsExtensionsMap) {
+            if (verbose) {
                 cout << "jsExtension: " << jsExtension.first << endl;
             }
-            tinyJS->addNative(
-                jsExtension.first,
-                reinterpret_cast<JSCallback>(jsExtension.second),
-                &context);
+            tinyJS->addNative(jsExtension.first,
+                              reinterpret_cast<JSCallback>(jsExtension.second),
+                              &context);
         }
     }
 
-    try
-    {
+    try {
         tinyJS->execute(startFileContent);
-    }
-    catch (CScriptException *error)
-    {
-
+    } catch (CScriptException *error) {
         cout << "---[SCRIPT ERROR START]---" << endl;
         cout << "Tiny-JS error: " << error->text << endl;
         cout << "---[SCRIPT ERROR END]---" << endl;

@@ -9,14 +9,17 @@
  *
  * Copyright (C) 2009 Pur3 Ltd
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ of
  * this software and associated documentation files (the "Software"), to deal in
  * the Software without restriction, including without limitation the rights to
  * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
- * of the Software, and to permit persons to whom the Software is furnished to do
+ * of the Software, and to permit persons to whom the Software is furnished to
+ do
  * so, subject to the following conditions:
 
- * The above copyright notice and this permission notice shall be included in all
+ * The above copyright notice and this permission notice shall be included in
+ all
  * copies or substantial portions of the Software.
 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
@@ -29,16 +32,16 @@
  */
 
 #include "TinyJS_Functions.h"
-#include <math.h>
-#include <cstdlib>
-#include <sstream>
 #include <chrono>
+#include <cstdlib>
 #include <iostream>
+#include <math.h>
+#include <sstream>
 
 using namespace std;
 // ----------------------------------------------- Actual Functions
 void scTrace(CScriptVar *, void *userdata) {
-    CTinyJS *js = (CTinyJS*)userdata;
+    CTinyJS *js = (CTinyJS *)userdata;
     js->root->trace();
 }
 
@@ -52,27 +55,29 @@ void scObjectClone(CScriptVar *c, void *) {
 }
 
 void scDateNow(CScriptVar *c, void *) {
-       auto epoch = std::chrono::high_resolution_clock::now().time_since_epoch();
-	double ms = static_cast<double>(std::chrono::duration_cast< std::chrono::milliseconds >(epoch).count());
-	//cout << ms << endl;
-	c->getReturnVar()->setDouble(ms);
+    auto epoch = std::chrono::high_resolution_clock::now().time_since_epoch();
+    double ms = static_cast<double>(
+        std::chrono::duration_cast<std::chrono::milliseconds>(epoch).count());
+    // cout << ms << endl;
+    c->getReturnVar()->setDouble(ms);
 }
 
 void scMathRand(CScriptVar *c, void *) {
-    c->getReturnVar()->setDouble((double)rand()/RAND_MAX);
+    c->getReturnVar()->setDouble((double)rand() / RAND_MAX);
 }
 
 void scMathRandInt(CScriptVar *c, void *) {
     int min = c->getParameter("min")->getInt();
     int max = c->getParameter("max")->getInt();
-    int val = min + (int)(rand()%(1+max-min));
+    int val = min + (int)(rand() % (1 + max - min));
     c->getReturnVar()->setInt(val);
 }
 
 void scCharToInt(CScriptVar *c, void *) {
-    string str = c->getParameter("ch")->getString();;
+    string str = c->getParameter("ch")->getString();
+    ;
     int val = 0;
-    if (str.length()>0)
+    if (str.length() > 0)
         val = (int)str.c_str()[0];
     c->getReturnVar()->setInt(val);
 }
@@ -81,7 +86,7 @@ void scStringIndexOf(CScriptVar *c, void *) {
     string str = c->getParameter("this")->getString();
     string search = c->getParameter("search")->getString();
     size_t p = str.find(search);
-    size_t val = (p==string::npos) ? -1 : p;
+    size_t val = (p == string::npos) ? -1 : p;
     c->getReturnVar()->setInt(static_cast<int>(val));
 }
 
@@ -90,8 +95,8 @@ void scStringSubstring(CScriptVar *c, void *) {
     int lo = c->getParameter("lo")->getInt();
     int hi = c->getParameter("hi")->getInt();
 
-    int l = hi-lo;
-    if (l>0 && lo>=0 && lo+l<=(int)str.length())
+    int l = hi - lo;
+    if (l > 0 && lo >= 0 && lo + l <= (int)str.length())
         c->getReturnVar()->setString(str.substr(lo, l));
     else
         c->getReturnVar()->setString("");
@@ -100,7 +105,7 @@ void scStringSubstring(CScriptVar *c, void *) {
 void scStringCharAt(CScriptVar *c, void *) {
     string str = c->getParameter("this")->getString();
     int p = c->getParameter("pos")->getInt();
-    if (p>=0 && p<(int)str.length())
+    if (p >= 0 && p < (int)str.length())
         c->getReturnVar()->setString(str.substr(p, 1));
     else
         c->getReturnVar()->setString("");
@@ -109,7 +114,7 @@ void scStringCharAt(CScriptVar *c, void *) {
 void scStringCharCodeAt(CScriptVar *c, void *) {
     string str = c->getParameter("this")->getString();
     int p = c->getParameter("pos")->getInt();
-    if (p>=0 && p<(int)str.length())
+    if (p >= 0 && p < (int)str.length())
         c->getReturnVar()->setInt(str.at(p));
     else
         c->getReturnVar()->setInt(0);
@@ -124,12 +129,12 @@ void scStringSplit(CScriptVar *c, void *) {
 
     size_t pos = str.find(sep);
     while (pos != string::npos) {
-        result->setArrayIndex(length++, new CScriptVar(str.substr(0,pos)));
-        str = str.substr(pos+1);
+        result->setArrayIndex(length++, new CScriptVar(str.substr(0, pos)));
+        str = str.substr(pos + 1);
         pos = str.find(sep);
     }
 
-    if (str.size()>0)
+    if (str.size() > 0)
         result->setArrayIndex(length++, new CScriptVar(str));
 }
 
@@ -142,7 +147,7 @@ void scStringFromCharCode(CScriptVar *c, void *) {
 
 void scIntegerParseInt(CScriptVar *c, void *) {
     string str = c->getParameter("str")->getString();
-    size_t val = strtol(str.c_str(),0,0);
+    size_t val = strtol(str.c_str(), 0, 0);
     c->getReturnVar()->setInt(static_cast<int>(val));
 }
 
@@ -156,7 +161,7 @@ void scIntegerValueOf(CScriptVar *c, void *) {
     string str = c->getParameter("str")->getString();
 
     int val = 0;
-    if (str.length()==1)
+    if (str.length() == 1)
         val = str[0];
     c->getReturnVar()->setInt(val);
 }
@@ -212,10 +217,10 @@ void scArrayRemove(CScriptVar *c, void *) {
     while (v) {
         int n = v->getIntName();
         int newn = n;
-        for (size_t i=0; i<removedIndices.size(); i++)
-            if (n>=removedIndices[i])
+        for (size_t i = 0; i < removedIndices.size(); i++)
+            if (n >= removedIndices[i])
                 newn--;
-        if (newn!=n)
+        if (newn != n)
             v->setIntName(newn);
         v = v->nextSibling;
     }
@@ -227,8 +232,9 @@ void scArrayJoin(CScriptVar *c, void *) {
 
     ostringstream sstr;
     int l = arr->getArrayLength();
-    for (int i=0; i<l; i++) {
-        if (i>0) sstr << sep;
+    for (int i = 0; i < l; i++) {
+        if (i > 0)
+            sstr << sep;
         sstr << arr->getArrayIndex(i)->getString();
     }
 
@@ -237,24 +243,35 @@ void scArrayJoin(CScriptVar *c, void *) {
 
 // ----------------------------------------------- Register Functions
 void registerFunctions(CTinyJS *tinyJS) {
-    tinyJS->addNative("function exec(jsCode)", scExec, tinyJS); // execute the given code
-    tinyJS->addNative("function eval(jsCode)", scEval, tinyJS); // execute the given string (an expression) and return the result
+    tinyJS->addNative("function exec(jsCode)", scExec,
+                      tinyJS); // execute the given code
+    tinyJS->addNative("function eval(jsCode)", scEval,
+                      tinyJS); // execute the given string (an expression) and
+                               // return the result
     tinyJS->addNative("function trace()", scTrace, tinyJS);
     tinyJS->addNative("function Object.dump()", scObjectDump, 0);
     tinyJS->addNative("function Object.clone()", scObjectClone, 0);
     tinyJS->addNative("function Math.rand()", scMathRand, 0);
     tinyJS->addNative("function Math.randInt(min, max)", scMathRandInt, 0);
-    tinyJS->addNative("function charToInt(ch)", scCharToInt, 0); //  convert a character to an int - get its value
-    tinyJS->addNative("function String.indexOf(search)", scStringIndexOf, 0); // find the position of a string in a string, -1 if not
+    tinyJS->addNative("function charToInt(ch)", scCharToInt,
+                      0); //  convert a character to an int - get its value
+    tinyJS->addNative(
+        "function String.indexOf(search)", scStringIndexOf,
+        0); // find the position of a string in a string, -1 if not
     tinyJS->addNative("function String.substring(lo,hi)", scStringSubstring, 0);
     tinyJS->addNative("function String.charAt(pos)", scStringCharAt, 0);
     tinyJS->addNative("function String.charCodeAt(pos)", scStringCharCodeAt, 0);
-    tinyJS->addNative("function String.fromCharCode(char)", scStringFromCharCode, 0);
+    tinyJS->addNative("function String.fromCharCode(char)",
+                      scStringFromCharCode, 0);
     tinyJS->addNative("function String.split(separator)", scStringSplit, 0);
-    tinyJS->addNative("function Double.parseDouble(str)", scDoubleParseDouble, 0);
-    tinyJS->addNative("function Integer.parseInt(str)", scIntegerParseInt, 0); // string to int
-    tinyJS->addNative("function Integer.valueOf(str)", scIntegerValueOf, 0); // value of a single character
-    tinyJS->addNative("function JSON.stringify(obj, replacer)", scJSONStringify, 0); // convert to JSON. replacer is ignored at the moment
+    tinyJS->addNative("function Double.parseDouble(str)", scDoubleParseDouble,
+                      0);
+    tinyJS->addNative("function Integer.parseInt(str)", scIntegerParseInt,
+                      0); // string to int
+    tinyJS->addNative("function Integer.valueOf(str)", scIntegerValueOf,
+                      0); // value of a single character
+    tinyJS->addNative("function JSON.stringify(obj, replacer)", scJSONStringify,
+                      0); // convert to JSON. replacer is ignored at the moment
     // JSON.parse is left out as you can (unsafely!) use eval instead
     tinyJS->addNative("function Array.contains(obj)", scArrayContains, 0);
     tinyJS->addNative("function Array.remove(obj)", scArrayRemove, 0);

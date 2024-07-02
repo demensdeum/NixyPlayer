@@ -1,32 +1,32 @@
 #pragma once
 
-#include <string>
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <string>
 
-using std::string;
 using std::cout;
 using std::endl;
+using std::string;
 
 string fileContent(const char *path, bool verbose) {
-        std::ifstream file(path);
+    std::ifstream file(path);
 
-        if (!file.is_open()) {
-            if (verbose) {
-                cout << "Failed to open the file: " << path << endl;
-            }
-            exit(3);
+    if (!file.is_open()) {
+        if (verbose) {
+            cout << "Failed to open the file: " << path << endl;
         }
+        exit(3);
+    }
 
-        string startFileContent;
-        string line;
+    string startFileContent;
+    string line;
 
-        while (std::getline(file, line)) {
-            startFileContent += line;
-            startFileContent += '\n';
-        }
+    while (std::getline(file, line)) {
+        startFileContent += line;
+        startFileContent += '\n';
+    }
 
-        file.close();
+    file.close();
 
-        return startFileContent;
+    return startFileContent;
 }

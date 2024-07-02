@@ -9,14 +9,17 @@
  *
  * Copyright (C) 2011 O.Z.L.B.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ of
  * this software and associated documentation files (the "Software"), to deal in
  * the Software without restriction, including without limitation the rights to
  * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
- * of the Software, and to permit persons to whom the Software is furnished to do
+ * of the Software, and to permit persons to whom the Software is furnished to
+ do
  * so, subject to the following conditions:
 
- * The above copyright notice and this permission notice shall be included in all
+ * The above copyright notice and this permission notice shall be included in
+ all
  * copies or substantial portions of the Software.
 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
@@ -28,227 +31,212 @@
  * SOFTWARE.
  */
 
-#include <math.h>
-#include <cstdlib>
-#include <sstream>
 #include "TinyJS_MathFunctions.h"
+#include <cstdlib>
+#include <math.h>
+#include <sstream>
 
 using namespace std;
 
-#define k_E                 exp(1.0)
-#define k_PI                3.1415926535897932384626433832795
+#define k_E exp(1.0)
+#define k_PI 3.1415926535897932384626433832795
 
-#define F_ABS(a)            ((a)>=0 ? (a) : (-(a)))
-#define F_MIN(a,b)          ((a)>(b) ? (b) : (a))
-#define F_MAX(a,b)          ((a)>(b) ? (a) : (b))
-#define F_SGN(a)            ((a)>0 ? 1 : ((a)<0 ? -1 : 0 ))
-#define F_RNG(a,min,max)    ((a)<(min) ? min : ((a)>(max) ? max : a ))
-#define F_ROUND(a)          ((a)>0 ? (int) ((a)+0.5) : (int) ((a)-0.5) )
+#define F_ABS(a) ((a) >= 0 ? (a) : (-(a)))
+#define F_MIN(a, b) ((a) > (b) ? (b) : (a))
+#define F_MAX(a, b) ((a) > (b) ? (a) : (b))
+#define F_SGN(a) ((a) > 0 ? 1 : ((a) < 0 ? -1 : 0))
+#define F_RNG(a, min, max) ((a) < (min) ? min : ((a) > (max) ? max : a))
+#define F_ROUND(a) ((a) > 0 ? (int)((a) + 0.5) : (int)((a)-0.5))
 
-//CScriptVar shortcut macro
-#define scIsInt(a)          ( c->getParameter(a)->isInt() )
-#define scIsDouble(a)       ( c->getParameter(a)->isDouble() )
-#define scGetInt(a)         ( c->getParameter(a)->getInt() )
-#define scGetDouble(a)      (static_cast<float>(c->getParameter(a)->getDouble() ))
-#define scReturnInt(a)      ( c->getReturnVar()->setInt(a) )
-#define scReturnDouble(a)   ( c->getReturnVar()->setDouble(a) )
+// CScriptVar shortcut macro
+#define scIsInt(a) (c->getParameter(a)->isInt())
+#define scIsDouble(a) (c->getParameter(a)->isDouble())
+#define scGetInt(a) (c->getParameter(a)->getInt())
+#define scGetDouble(a) (static_cast<float>(c->getParameter(a)->getDouble()))
+#define scReturnInt(a) (c->getReturnVar()->setInt(a))
+#define scReturnDouble(a) (c->getReturnVar()->setDouble(a))
 
 #ifdef _MSC_VER
-namespace
-{
-double asinh( const double &value )
-{
+namespace {
+double asinh(const double &value) {
     double returned;
 
-    if(value>0)
+    if (value > 0)
         returned = log(value + sqrt(value * value + 1));
     else
         returned = -log(-value + sqrt(value * value + 1));
 
-    return(returned);
+    return (returned);
 }
 
-double acosh( const double &value )
-{
+double acosh(const double &value) {
     double returned;
 
-    if(value>0)
+    if (value > 0)
         returned = log(value + sqrt(value * value - 1));
     else
         returned = -log(-value + sqrt(value * value - 1));
 
-    return(returned);
+    return (returned);
 }
-}
+} // namespace
 #endif
 
-//Math.abs(x) - returns absolute of given value
+// Math.abs(x) - returns absolute of given value
 void scMathAbs(CScriptVar *c, void *) {
-    if ( scIsInt("a") ) {
-        scReturnInt( F_ABS( scGetInt("a") ) );
-    } else if ( scIsDouble("a") ) {
-        scReturnDouble( F_ABS( scGetDouble("a") ) );
+    if (scIsInt("a")) {
+        scReturnInt(F_ABS(scGetInt("a")));
+    } else if (scIsDouble("a")) {
+        scReturnDouble(F_ABS(scGetDouble("a")));
     }
 }
 
-//Math.round(a) - returns nearest round of given value
+// Math.round(a) - returns nearest round of given value
 void scMathRound(CScriptVar *c, void *) {
-    if ( scIsInt("a") ) {
-        scReturnInt( F_ROUND( scGetInt("a") ) );
-    } else if ( scIsDouble("a") ) {
-        scReturnDouble( F_ROUND( scGetDouble("a") ) );
+    if (scIsInt("a")) {
+        scReturnInt(F_ROUND(scGetInt("a")));
+    } else if (scIsDouble("a")) {
+        scReturnDouble(F_ROUND(scGetDouble("a")));
     }
 }
 
-//Math.min(a,b) - returns minimum of two given values
+// Math.min(a,b) - returns minimum of two given values
 void scMathMin(CScriptVar *c, void *) {
-    if ( (scIsInt("a")) && (scIsInt("b")) ) {
-        scReturnInt( F_MIN( scGetInt("a"), scGetInt("b") ) );
+    if ((scIsInt("a")) && (scIsInt("b"))) {
+        scReturnInt(F_MIN(scGetInt("a"), scGetInt("b")));
     } else {
-        scReturnDouble( F_MIN( scGetDouble("a"), scGetDouble("b") ) );
+        scReturnDouble(F_MIN(scGetDouble("a"), scGetDouble("b")));
     }
 }
 
-//Math.max(a,b) - returns maximum of two given values
+// Math.max(a,b) - returns maximum of two given values
 void scMathMax(CScriptVar *c, void *) {
-    if ( (scIsInt("a")) && (scIsInt("b")) ) {
-        scReturnInt( F_MAX( scGetInt("a"), scGetInt("b") ) );
+    if ((scIsInt("a")) && (scIsInt("b"))) {
+        scReturnInt(F_MAX(scGetInt("a"), scGetInt("b")));
     } else {
-        scReturnDouble( F_MAX( scGetDouble("a"), scGetDouble("b") ) );
+        scReturnDouble(F_MAX(scGetDouble("a"), scGetDouble("b")));
     }
 }
 
-//Math.range(x,a,b) - returns value limited between two given values
+// Math.range(x,a,b) - returns value limited between two given values
 void scMathRange(CScriptVar *c, void *) {
-    if ( (scIsInt("x")) ) {
-        scReturnInt( F_RNG( scGetInt("x"), scGetInt("a"), scGetInt("b") ) );
+    if ((scIsInt("x"))) {
+        scReturnInt(F_RNG(scGetInt("x"), scGetInt("a"), scGetInt("b")));
     } else {
-        scReturnDouble( F_RNG( scGetDouble("x"), scGetDouble("a"), scGetDouble("b") ) );
+        scReturnDouble(
+            F_RNG(scGetDouble("x"), scGetDouble("a"), scGetDouble("b")));
     }
 }
 
-//Math.sign(a) - returns sign of given value (-1==negative,0=zero,1=positive)
+// Math.sign(a) - returns sign of given value (-1==negative,0=zero,1=positive)
 void scMathSign(CScriptVar *c, void *) {
-    if ( scIsInt("a") ) {
-        scReturnInt( F_SGN( scGetInt("a") ) );
-    } else if ( scIsDouble("a") ) {
-        scReturnDouble( F_SGN( scGetDouble("a") ) );
+    if (scIsInt("a")) {
+        scReturnInt(F_SGN(scGetInt("a")));
+    } else if (scIsDouble("a")) {
+        scReturnDouble(F_SGN(scGetDouble("a")));
     }
 }
 
-//Math.PI() - returns PI value
-void scMathPI(CScriptVar *c, void *) {
-    scReturnDouble(k_PI);
-}
+// Math.PI() - returns PI value
+void scMathPI(CScriptVar *c, void *) { scReturnDouble(k_PI); }
 
-//Math.toDegrees(a) - returns degree value of a given angle in radians
+// Math.toDegrees(a) - returns degree value of a given angle in radians
 void scMathToDegrees(CScriptVar *c, void *) {
-    scReturnDouble( (180.0/k_PI)*( scGetDouble("a") ) );
+    scReturnDouble((180.0 / k_PI) * (scGetDouble("a")));
 }
 
-//Math.toRadians(a) - returns radians value of a given angle in degrees
+// Math.toRadians(a) - returns radians value of a given angle in degrees
 void scMathToRadians(CScriptVar *c, void *) {
-    scReturnDouble( (k_PI/180.0)*( scGetDouble("a") ) );
+    scReturnDouble((k_PI / 180.0) * (scGetDouble("a")));
 }
 
-//Math.sin(a) - returns trig. sine of given angle in radians
-void scMathSin(CScriptVar *c, void *) {
-    scReturnDouble( sin( scGetDouble("a") ) );
-}
+// Math.sin(a) - returns trig. sine of given angle in radians
+void scMathSin(CScriptVar *c, void *) { scReturnDouble(sin(scGetDouble("a"))); }
 
-//Math.asin(a) - returns trig. arcsine of given angle in radians
+// Math.asin(a) - returns trig. arcsine of given angle in radians
 void scMathASin(CScriptVar *c, void *) {
-    scReturnDouble( asin( scGetDouble("a") ) );
+    scReturnDouble(asin(scGetDouble("a")));
 }
 
-//Math.cos(a) - returns trig. cosine of given angle in radians
-void scMathCos(CScriptVar *c, void *) {
-    scReturnDouble( cos( scGetDouble("a") ) );
-}
+// Math.cos(a) - returns trig. cosine of given angle in radians
+void scMathCos(CScriptVar *c, void *) { scReturnDouble(cos(scGetDouble("a"))); }
 
-//Math.acos(a) - returns trig. arccosine of given angle in radians
+// Math.acos(a) - returns trig. arccosine of given angle in radians
 void scMathACos(CScriptVar *c, void *) {
-    scReturnDouble( acos( scGetDouble("a") ) );
+    scReturnDouble(acos(scGetDouble("a")));
 }
 
-//Math.tan(a) - returns trig. tangent of given angle in radians
-void scMathTan(CScriptVar *c, void *) {
-    scReturnDouble( tan( scGetDouble("a") ) );
-}
+// Math.tan(a) - returns trig. tangent of given angle in radians
+void scMathTan(CScriptVar *c, void *) { scReturnDouble(tan(scGetDouble("a"))); }
 
-//Math.atan(a) - returns trig. arctangent of given angle in radians
+// Math.atan(a) - returns trig. arctangent of given angle in radians
 void scMathATan(CScriptVar *c, void *) {
-    scReturnDouble( atan( scGetDouble("a") ) );
+    scReturnDouble(atan(scGetDouble("a")));
 }
 
-//Math.atan2(a) - returns trig. arctangent of given angle in radians
+// Math.atan2(a) - returns trig. arctangent of given angle in radians
 void scMathATan2(CScriptVar *c, void *) {
-    scReturnDouble( atan2( scGetDouble("a"), scGetDouble("b") ) );
+    scReturnDouble(atan2(scGetDouble("a"), scGetDouble("b")));
 }
 
-//Math.sinh(a) - returns trig. hyperbolic sine of given angle in radians
+// Math.sinh(a) - returns trig. hyperbolic sine of given angle in radians
 void scMathSinh(CScriptVar *c, void *) {
-    scReturnDouble( sinh( scGetDouble("a") ) );
+    scReturnDouble(sinh(scGetDouble("a")));
 }
 
-//Math.asinh(a) - returns trig. hyperbolic arcsine of given angle in radians
+// Math.asinh(a) - returns trig. hyperbolic arcsine of given angle in radians
 void scMathASinh(CScriptVar *c, void *) {
-    scReturnDouble( static_cast<double>(asinh( static_cast<long double>(scGetDouble("a") ) ) ));
+    scReturnDouble(
+        static_cast<double>(asinh(static_cast<long double>(scGetDouble("a")))));
 }
 
-//Math.cosh(a) - returns trig. hyperbolic cosine of given angle in radians
+// Math.cosh(a) - returns trig. hyperbolic cosine of given angle in radians
 void scMathCosh(CScriptVar *c, void *) {
-    scReturnDouble( cosh( scGetDouble("a") ) );
+    scReturnDouble(cosh(scGetDouble("a")));
 }
 
-//Math.acosh(a) - returns trig. hyperbolic arccosine of given angle in radians
+// Math.acosh(a) - returns trig. hyperbolic arccosine of given angle in radians
 void scMathACosh(CScriptVar *c, void *) {
-    scReturnDouble( static_cast<double>(acosh( (long double)scGetDouble("a") ) ) );
+    scReturnDouble(static_cast<double>(acosh((long double)scGetDouble("a"))));
 }
 
-//Math.tanh(a) - returns trig. hyperbolic tangent of given angle in radians
+// Math.tanh(a) - returns trig. hyperbolic tangent of given angle in radians
 void scMathTanh(CScriptVar *c, void *) {
-    scReturnDouble( tanh( scGetDouble("a") ) );
+    scReturnDouble(tanh(scGetDouble("a")));
 }
 
-//Math.atan(a) - returns trig. hyperbolic arctangent of given angle in radians
+// Math.atan(a) - returns trig. hyperbolic arctangent of given angle in radians
 void scMathATanh(CScriptVar *c, void *) {
-    scReturnDouble( atan( scGetDouble("a") ) );
+    scReturnDouble(atan(scGetDouble("a")));
 }
 
-//Math.E() - returns E Neplero value
-void scMathE(CScriptVar *c, void *) {
-    scReturnDouble(k_E);
-}
+// Math.E() - returns E Neplero value
+void scMathE(CScriptVar *c, void *) { scReturnDouble(k_E); }
 
-//Math.log(a) - returns natural logaritm (base E) of given value
-void scMathLog(CScriptVar *c, void *) {
-    scReturnDouble( log( scGetDouble("a") ) );
-}
+// Math.log(a) - returns natural logaritm (base E) of given value
+void scMathLog(CScriptVar *c, void *) { scReturnDouble(log(scGetDouble("a"))); }
 
-//Math.log10(a) - returns logaritm(base 10) of given value
+// Math.log10(a) - returns logaritm(base 10) of given value
 void scMathLog10(CScriptVar *c, void *) {
-    scReturnDouble( log10( scGetDouble("a") ) );
+    scReturnDouble(log10(scGetDouble("a")));
 }
 
-//Math.exp(a) - returns e raised to the power of a given number
-void scMathExp(CScriptVar *c, void *) {
-    scReturnDouble( exp( scGetDouble("a") ) );
-}
+// Math.exp(a) - returns e raised to the power of a given number
+void scMathExp(CScriptVar *c, void *) { scReturnDouble(exp(scGetDouble("a"))); }
 
-//Math.pow(a,b) - returns the result of a number raised to a power (a)^(b)
+// Math.pow(a,b) - returns the result of a number raised to a power (a)^(b)
 void scMathPow(CScriptVar *c, void *) {
-    scReturnDouble( pow( scGetDouble("a"), scGetDouble("b") ) );
+    scReturnDouble(pow(scGetDouble("a"), scGetDouble("b")));
 }
 
-//Math.sqr(a) - returns square of given value
+// Math.sqr(a) - returns square of given value
 void scMathSqr(CScriptVar *c, void *) {
-    scReturnDouble( ( scGetDouble("a") * scGetDouble("a") ) );
+    scReturnDouble((scGetDouble("a") * scGetDouble("a")));
 }
 
-//Math.sqrt(a) - returns square root of given value
+// Math.sqrt(a) - returns square root of given value
 void scMathSqrt(CScriptVar *c, void *) {
-    scReturnDouble( sqrtf( scGetDouble("a") ) );
+    scReturnDouble(sqrtf(scGetDouble("a")));
 }
 
 // ----------------------------------------------- Register Functions
@@ -287,5 +275,4 @@ void registerMathFunctions(CTinyJS *tinyJS) {
 
     tinyJS->addNative("function Math.sqr(a)", scMathSqr, 0);
     tinyJS->addNative("function Math.sqrt(a)", scMathSqrt, 0);
-
 }

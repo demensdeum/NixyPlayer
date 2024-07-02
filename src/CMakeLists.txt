@@ -37,8 +37,8 @@ enable_cxx_compiler_flag_if_supported("-Wformat=2")
 
 include_directories(. ../shared/thirdparty ../shared/include)
 
-file(GLOB_RECURSE SOURCE_FILES
-    "*.cpp",
+file(GLOB_RECURSE SOURCE_FILES 
+    "*.cpp" 
     "../shared/thirdparty/*.cpp"
 )
 
