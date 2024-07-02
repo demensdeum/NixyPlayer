@@ -5,5 +5,5 @@ Nixy Player - small crossplatform extendable JavaScript runtime
 
 Contains VSCode files.  
   
-Tools:  
+### Tools  
 Tiny-JS by Gordon Williams with lot of changes
