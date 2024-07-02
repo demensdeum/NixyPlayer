@@ -7,3 +7,6 @@ Contains VSCode files.
   
 ### Tools  
 Tiny-JS by Gordon Williams with lot of changes
+
+### ToDo
+Only Linux dynamic libraries supported
