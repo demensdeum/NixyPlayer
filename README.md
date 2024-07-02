@@ -10,3 +10,4 @@ Tiny-JS by Gordon Williams with lot of changes
 
 ### ToDo
 Only Linux dynamic libraries supported
+Check doc/ToDo.md file
