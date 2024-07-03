@@ -1,5 +1,5 @@
 #include <NixyPlayerContext.h>
-#include <dlfcn.h>
+#include <dylib/dylib.hpp>
 #include <tiny-js/TinyJS.h>
 #include <tiny-js/TinyJS_Functions.h>
 #include <tiny-js/TinyJS_MathFunctions.h>
@@ -17,7 +17,6 @@
 using std::cout;
 using std::endl;
 using std::map;
-using std::println;
 using std::string;
 using std::vector;
 
@@ -56,38 +55,33 @@ int main(int argc, char **argv) {
 
     std::stringstream ss(extensions);  
     string extension;
+
+    vector<dylib *> libs;
+
     while (ss >> extension) {
-        auto extensionHandle = dlopen(extension.c_str(), RTLD_LAZY);
-
-        if (!extensionHandle) {
-            const char *errorString = dlerror();
-            cout << errorString << endl;
-            cout << "Error 4" << endl;
-            exit(4);
-        }
-
-        typedef map<string, void *> (*JSExtensionFunctionPointer)();
-
-        auto functionPointer = JSExtensionFunctionPointer();
-        functionPointer = (JSExtensionFunctionPointer)dlsym(
-            extensionHandle, "registerNixyPlayerExtensions");
-        auto dlsymError = dlerror();
-
-        if (dlsymError) {
-            const char *errorString = dlerror();
-            cout << errorString << endl;
-            cout << "Error 5" << endl;
-            exit(5);
-        }
-
-        auto jsExtensionsMap = functionPointer();
+        dylib* lib = new dylib(extension, dylib::no_filename_decorations);
+        lib->verbose = verbose;
+        libs.push_back(lib);
+        auto jsExtensionsMapPointer = lib->get_function<map<string, string>()>("registerNixyPlayerExtensions");
+        auto jsExtensionsMap = jsExtensionsMapPointer();
 
         for (auto jsExtension : jsExtensionsMap) {
             if (verbose) {
                 cout << "jsExtension: " << jsExtension.first << endl;
             }
+            const char *jsExtensionFunctionName = jsExtension.second.c_str();
+                if (lib->has_symbol(jsExtensionFunctionName)) {
+                    if (verbose) {
+                        cout << "Library: " << extension << " has " << jsExtensionFunctionName << endl;
+                    }
+                }
+                else {
+                    cout << "Library: " << extension << " does not have " << jsExtensionFunctionName << ". Error 5" << endl;
+                    exit(5);
+                }
+            JSCallback jsExtensionFunctionPointer = reinterpret_cast<JSCallback>(lib->get_function<void>(jsExtensionFunctionName));
             tinyJS->addNative(jsExtension.first,
-                              reinterpret_cast<JSCallback>(jsExtension.second),
+                              jsExtensionFunctionPointer,
                               &context);
         }
     }
@@ -101,5 +95,10 @@ int main(int argc, char **argv) {
         cout << "Error 2" << endl;
         exit(2);
     }
+
+    for (auto lib : libs) {
+        delete(lib);
+    }
+
     return 0;
 }

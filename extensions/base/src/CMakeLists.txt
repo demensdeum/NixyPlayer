@@ -20,7 +20,9 @@ project(${PROJECT_NAME})
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+if(CMAKE_BUILD_TYPE STREQUAL "Debug" AND MINGW32)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -gdwarf-2")
+endif()
 
 enable_cxx_compiler_flag_if_supported("-Wall")
 enable_cxx_compiler_flag_if_supported("-Wextra")
@@ -39,7 +41,33 @@ include_directories(. ../../../shared/thirdparty ../../../shared/include)
 
 file(GLOB_RECURSE SOURCE_FILES 
     "*.cpp" 
-    "../thirdparty/*.cpp"
+    "../../../shared/thirdparty/tiny-js/*.cpp"
 )
 
+if(MINGW32)
+SET(CMAKE_SYSTEM_NAME Windows)
+SET(CMAKE_C_COMPILER i686-w64-mingw32-gcc)
+SET(CMAKE_CXX_COMPILER i686-w64-mingw32-g++)
+SET(CMAKE_RC_COMPILER i686-w64-mingw32-windres)
+SET(CMAKE_RANLIB i686-w64-mingw32-ranlib)
+else()
+set(CMAKE_ENABLE_EXPORTS ON)
+endif()
+
+if (MINGW32)
+add_library(${PROJECT_NAME}.dll SHARED ${SOURCE_FILES})
+target_link_libraries(
+    ${PROJECT_NAME}.dll 
+    -static
+    -static-libgcc
+    -static-libstdc++
+)
+set_target_properties(${PROJECT_NAME}.dll PROPERTIES
+        PREFIX ""
+        SUFFIX ""
+        LINK_FLAGS "-Wl,--add-stdcall-alias -shared"
+        POSITION_INDEPENDENT_CODE 0
+)
+else()
 add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
+endif()

@@ -115,6 +115,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <limits>
 
 #define ASSERT(X) assert(X)
 /* Frees the given link IF it isn't owned by anything else */
@@ -766,7 +767,7 @@ string CScriptLex::getPosition(size_t pos, bool useTokenLastEnd) {
         }
     }
     char buf[256];
-    sprintf_s(buf, 256, "(line: %ld, col: %ld)", line, col);
+    sprintf_s(buf, 256, "(line: %zu, col: %zu)", line, col);
     return buf;
 }
 

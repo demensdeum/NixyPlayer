@@ -12,7 +12,8 @@ Nixy Player - small crossplatform extendable JavaScript runtime
 Contains VSCode files.  
   
 ### Tools  
-Tiny-JS by Gordon Williams with lot of changes
+Tiny-JS by Gordon Williams with lot of changes  
+dylib https://github.com/martin-olivier/dylib  
 
 ### ToDo
 Only Linux dynamic libraries supported  

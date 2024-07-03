@@ -20,7 +20,10 @@ project(${PROJECT_NAME})
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug" AND MINGW32)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -gdwarf-2")
+endif()
 
 enable_cxx_compiler_flag_if_supported("-Wall")
 enable_cxx_compiler_flag_if_supported("-Wextra")
@@ -42,8 +45,24 @@ file(GLOB_RECURSE SOURCE_FILES
     "../shared/thirdparty/*.cpp"
 )
 
+if(MINGW32)
+SET(CMAKE_SYSTEM_NAME Windows)
+SET(CMAKE_C_COMPILER i686-w64-mingw32-gcc)
+SET(CMAKE_CXX_COMPILER i686-w64-mingw32-g++)
+SET(CMAKE_RC_COMPILER i686-w64-mingw32-windres)
+SET(CMAKE_RANLIB i686-w64-mingw32-ranlib)
+else()
 set(CMAKE_ENABLE_EXPORTS ON)
+endif()
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
+if (MINGW32)
+target_link_libraries(${PROJECT_NAME} 
+-static 
+-static-libgcc 
+-static-libstdc++ 
+)
+else()
 target_link_libraries(${PROJECT_NAME})
+endif()
