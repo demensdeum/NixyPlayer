@@ -6,7 +6,7 @@
 Nixy Player - small crossplatform extendable JavaScript runtime.  
  Tested on Windows 7 x86 and Linux x86_64.
   
-<p align="center" width="80%">
+<p align="center" width="40%">
     <img width="100%" src="https://raw.githubusercontent.com/demensdeum/NixyPlayer/main/WindowsScreenshot.png">
 </p>
 
