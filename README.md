@@ -16,11 +16,10 @@
 ### Installation
 
 ### Download
-Visit the [releases page](https://github.com/demensdeum/NixyPlayer/releases) to download the latest version of Nixy Player for your operating system.
+Visit the [releases page](https://github.com/demensdeum/NixyPlayer/releases) to download the latest version of Nixy Player for your operating system.  
 
-<script type="text/plain">
-    Download the latest release here: [https://github.com/demensdeum/NixyPlayer/releases]
-</script>
+Download the latest release here: [https://github.com/demensdeum/NixyPlayer/releases]  
+
 
 ### OS Compatibility
 
