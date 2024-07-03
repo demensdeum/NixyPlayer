@@ -15,21 +15,19 @@
 
 ### Installation
 
-### Download
+### Download  
+
 Visit the [releases page](https://github.com/demensdeum/NixyPlayer/releases) to download the latest version of Nixy Player for your operating system.  
-
-Download the latest release here: [https://github.com/demensdeum/NixyPlayer/releases]  
-
 
 ### OS Compatibility
 
-==== Windows 7 x86 ====  
+#### Windows 7 x86    
 
 <p align="center">
 	<img width="80%" src="https://raw.githubusercontent.com/demensdeum/NixyPlayer/main/WindowsScreenshot.png">
 </p>
 
-==== Linux x86-64 ====  
+#### Linux x86-64  
 
 <p align="center">
 	<img width="100%" src="https://raw.githubusercontent.com/demensdeum/NixyPlayer/main/Screenshot.png">
