@@ -5,7 +5,7 @@
     
 </p>
 
-*Nixy Player*+ - A small, extendable, cross-platform JavaScript runtime.
+*Nixy Player* - A small, extendable, cross-platform JavaScript runtime.
 
 ## Features
 - *Cross-platform*: Available on Windows and Linux, and any other platform with C++ and dynamic libraries support.
