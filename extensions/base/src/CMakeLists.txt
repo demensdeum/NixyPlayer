@@ -58,9 +58,9 @@ if (MINGW32)
 add_library(${PROJECT_NAME}.dll SHARED ${SOURCE_FILES})
 target_link_libraries(
     ${PROJECT_NAME}.dll 
-    -static
-    -static-libgcc
-    -static-libstdc++
+#    -static
+#    -static-libgcc
+#    -static-libstdc++
 )
 set_target_properties(${PROJECT_NAME}.dll PROPERTIES
         PREFIX ""

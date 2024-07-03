@@ -59,9 +59,9 @@ add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
 if (MINGW32)
 target_link_libraries(${PROJECT_NAME} 
--static 
--static-libgcc 
--static-libstdc++ 
+#-static 
+#-static-libgcc 
+#-static-libstdc++ 
 )
 else()
 target_link_libraries(${PROJECT_NAME})
