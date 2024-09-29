@@ -27,7 +27,7 @@ Visit the [releases page](https://github.com/demensdeum/NixyPlayer/releases) to 
 	<img width="80%" src="https://raw.githubusercontent.com/demensdeum/NixyPlayer/main/WindowsScreenshot.png">
 </p>
 
-#### Linux x86-64  
+#### macOS 15.0 Apple-Silicon
 
 <p align="center">
 	<img width="100%" src="https://raw.githubusercontent.com/demensdeum/NixyPlayer/main/macOS_Screenshot.png">
