@@ -33,10 +33,10 @@ extern "C" LIB_EXPORT void PRINT_EXTENSION_FUNCTION(CScriptVar *v, void *) {
     cout << v->getParameter("text")->getString() << endl;
 }
 
-extern "C" LIB_EXPORT map<string, string> registerNixyPlayerExtensions() {
-    map<string, string> mapped;
-    mapped["function print(text)"] = TOSTRING(PRINT_EXTENSION_FUNCTION);
-    mapped["function console.log(text)"] = TOSTRING(PRINT_EXTENSION_FUNCTION);
-    mapped["function include(text)"] = TOSTRING(INCLUDE_EXTENSION_FUNCTION);
+extern "C" LIB_EXPORT void* registerNixyPlayerExtensions() {
+    auto mapped = new map<string, string>();
+    (*mapped)["function print(text)"] = TOSTRING(PRINT_EXTENSION_FUNCTION);
+    (*mapped)["function console.log(text)"] = TOSTRING(PRINT_EXTENSION_FUNCTION);
+    (*mapped)["function include(text)"] = TOSTRING(INCLUDE_EXTENSION_FUNCTION);
     return mapped;
 }

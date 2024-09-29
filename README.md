@@ -8,7 +8,7 @@
 *Nixy Player* - A small, extendable, cross-platform JavaScript runtime.
 
 ## Features
-- *Cross-platform*: Available on Windows and Linux, and any other platform with C++ and dynamic libraries support.
+- *Cross-platform*: Available on Windows macOS and Linux, and any other platform with C++ and dynamic libraries support.
 - *Lightweight*: Minimal resource usage with efficient performance.
 - *Extendable*: Built to be easily extendable with plugins and additional libraries.
 - *Developer-friendly*: Comes with VSCode integration for an hanced development experience.
@@ -25,6 +25,12 @@ Visit the [releases page](https://github.com/demensdeum/NixyPlayer/releases) to 
 
 <p align="center">
 	<img width="80%" src="https://raw.githubusercontent.com/demensdeum/NixyPlayer/main/WindowsScreenshot.png">
+</p>
+
+#### Linux x86-64  
+
+<p align="center">
+	<img width="100%" src="https://raw.githubusercontent.com/demensdeum/NixyPlayer/main/macOS_Screenshot.png">
 </p>
 
 #### Linux x86-64  

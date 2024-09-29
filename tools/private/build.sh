@@ -46,18 +46,31 @@ else
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-O3" ../src
 fi
 
-start_time=$(date +%s%N)
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    if ! command -v gdate &> /dev/null; then
+        echo "Error: 'gdate' is required but not installed on macOS. Please install it using 'brew install coreutils'."
+        exit 1
+    else
+        date_cmd="gdate"
+    fi
+else
+    date_cmd="date"
+fi
+
+start_time=$($date_cmd +%s%N)
 
 make -j$(nproc)
 
 if [ $? -eq 0 ]; then
-    end_time=$(date +%s%N)
-    duration=$(( (end_time - start_time) / 1000000 ))  # Duration in milliseconds
+    end_time=$($date_cmd +%s%N)
+    duration=$(( (end_time - start_time) / 1000000 ))
 
+    # Convert end time to seconds and nanoseconds
     end_time_seconds=$(( end_time / 1000000000 ))
     end_time_nanos=$(( end_time % 1000000000 ))
 
-    end_time_formatted=$(date -d "@${end_time_seconds}" +"%Y-%m-%d %H:%M:%S")
+    # Format end time and duration
+    end_time_formatted=$($date_cmd -d "@${end_time_seconds}" +"%Y-%m-%d %H:%M:%S")
     end_time_with_ms="${end_time_formatted}.$(( end_time_nanos / 1000000 ))"
 
     duration_seconds=$(( duration / 1000 ))

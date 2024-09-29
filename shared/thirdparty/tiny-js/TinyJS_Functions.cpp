@@ -86,7 +86,7 @@ void scStringIndexOf(CScriptVar *c, void *) {
     string str = c->getParameter("this")->getString();
     string search = c->getParameter("search")->getString();
     size_t p = str.find(search);
-    size_t val = (p == string::npos) ? -1 : p;
+    int val = (p == string::npos) ? -1 : (int)p;
     c->getReturnVar()->setInt(static_cast<int>(val));
 }
 
@@ -97,7 +97,7 @@ void scStringSubstring(CScriptVar *c, void *) {
 
     int l = hi - lo;
     if (l > 0 && lo >= 0 && lo + l <= (int)str.length())
-        c->getReturnVar()->setString(str.substr(lo, l));
+        c->getReturnVar()->setString(str.substr((size_t)lo, (size_t)l));
     else
         c->getReturnVar()->setString("");
 }
@@ -106,7 +106,7 @@ void scStringCharAt(CScriptVar *c, void *) {
     string str = c->getParameter("this")->getString();
     int p = c->getParameter("pos")->getInt();
     if (p >= 0 && p < (int)str.length())
-        c->getReturnVar()->setString(str.substr(p, 1));
+        c->getReturnVar()->setString(str.substr((size_t)p, (size_t)1));
     else
         c->getReturnVar()->setString("");
 }
@@ -115,7 +115,7 @@ void scStringCharCodeAt(CScriptVar *c, void *) {
     string str = c->getParameter("this")->getString();
     int p = c->getParameter("pos")->getInt();
     if (p >= 0 && p < (int)str.length())
-        c->getReturnVar()->setInt(str.at(p));
+        c->getReturnVar()->setInt(str.at((size_t)p));
     else
         c->getReturnVar()->setInt(0);
 }
@@ -147,7 +147,7 @@ void scStringFromCharCode(CScriptVar *c, void *) {
 
 void scIntegerParseInt(CScriptVar *c, void *) {
     string str = c->getParameter("str")->getString();
-    size_t val = strtol(str.c_str(), 0, 0);
+    size_t val = (size_t) strtol(str.c_str(), 0, 0);
     c->getReturnVar()->setInt(static_cast<int>(val));
 }
 

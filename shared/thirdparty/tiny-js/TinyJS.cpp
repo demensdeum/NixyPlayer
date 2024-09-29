@@ -1579,7 +1579,7 @@ void CTinyJS::execute(const string &code) {
         ostringstream msg;
         msg << "Error " << e->text;
 #ifdef TINYJS_CALL_STACK
-        for (int i = (int)call_stack.size() - 1; i >= 0; i--)
+        for (size_t i = call_stack.size() - 1; i >= 0; i--)
             msg << "\n" << i << ": " << call_stack.at(i);
 #endif
         msg << " at " << l->getPosition(0, true);
@@ -1620,7 +1620,7 @@ CScriptVarLink CTinyJS::evaluateComplex(const string &code) {
         ostringstream msg;
         msg << "Error " << e->text;
 #ifdef TINYJS_CALL_STACK
-        for (int i = (int)call_stack.size() - 1; i >= 0; i--)
+        for (size_t i = call_stack.size() - 1; i >= 0; i--)
             msg << "\n" << i << ": " << call_stack.at(i);
 #endif
         msg << " at " << l->getPosition(0, true);
@@ -1874,7 +1874,7 @@ CScriptVarLink *CTinyJS::factor(bool &execute) {
                         /* if we haven't found this defined yet, use the
                            built-in 'length' properly */
                         if (a->var->isArray() && name == "length") {
-                            size_t len = a->var->getArrayLength();
+                            int len = a->var->getArrayLength();
                             child = new CScriptVarLink(
                                 new CScriptVar(static_cast<int>(len)));
                         } else if (a->var->isString() && name == "length") {
@@ -2098,7 +2098,7 @@ CScriptVarLink *CTinyJS::shift(bool &execute) {
             if (op == LEX_RSHIFT)
                 a->var->setInt(a->var->getInt() >> shift);
             if (op == LEX_RSHIFTUNSIGNED)
-                a->var->setInt(((unsigned int)a->var->getInt()) >> shift);
+                a->var->setInt((a->var->getInt()) >> shift);
         }
     }
     return a;

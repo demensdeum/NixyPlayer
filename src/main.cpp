@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
 
     auto extensions = fileContent("extensions.nixyp", verbose);
 
-    NixyPlayerContext context{tinyJS = tinyJS, verbose = verbose};
+    NixyPlayerContext context{tinyJS, verbose};
 
     std::stringstream ss(extensions);  
     string extension;
@@ -62,10 +62,10 @@ int main(int argc, char **argv) {
         dylib* lib = new dylib(extension, dylib::no_filename_decorations);
         lib->verbose = verbose;
         libs.push_back(lib);
-        auto jsExtensionsMapPointer = lib->get_function<map<string, string>()>("registerNixyPlayerExtensions");
+        auto jsExtensionsMapPointer = lib->get_function<map<string, string>*()>("registerNixyPlayerExtensions");
         auto jsExtensionsMap = jsExtensionsMapPointer();
 
-        for (auto jsExtension : jsExtensionsMap) {
+        for (auto jsExtension : *jsExtensionsMap) {
             if (verbose) {
                 cout << "jsExtension: " << jsExtension.first << endl;
             }
