@@ -36,6 +36,7 @@ extern "C" LIB_EXPORT void PRINT_EXTENSION_FUNCTION(CScriptVar *v, void *) {
 extern "C" LIB_EXPORT map<string, string> registerNixyPlayerExtensions() {
     map<string, string> mapped;
     mapped["function print(text)"] = TOSTRING(PRINT_EXTENSION_FUNCTION);
+    mapped["function console.log(text)"] = TOSTRING(PRINT_EXTENSION_FUNCTION);
     mapped["function include(text)"] = TOSTRING(INCLUDE_EXTENSION_FUNCTION);
     return mapped;
 }
